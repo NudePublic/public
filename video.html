@@ -1,0 +1,31 @@
+<!-- video.html -->
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Odtwarzacz wideo</title>
+<style>
+:root{--bg:#0b0f12;--accent:#1db954;--muted:#9aa5ad;--radius:12px;}
+body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:#e6eef1;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100vh;}
+a{color:var(--accent);text-decoration:none;margin-bottom:16px;}
+video{max-width:100%;height:auto;border-radius:12px;}
+</style>
+</head>
+<body>
+<a href="index.html">← Powrót do galerii</a>
+<video id="player" controls></video>
+<script>
+const videos=[
+{id:'v1',title:'Wstęp do aerodynamiki',file:'video/video1.mp4'},
+{id:'v2',title:'Systemy napędowe',file:'video/video2.mp4'},
+{id:'v3',title:'Bezpieczeństwo lotu',file:'video/video3.mp4'}
+];
+const params=new URLSearchParams(window.location.search);
+const vid=params.get('video');
+const player=document.getElementById('player');
+const found=videos.find(v=>v.id===vid);
+if(found){player.src=found.file;player.play().catch(()=>{});}else{player.innerHTML='Wideo nie znalezione.';}
+</script>
+</body>
+</html>

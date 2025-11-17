@@ -1,0 +1,111 @@
+<!-- index.html z wyszukiwarką -->
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Galeria wideo</title>
+<style>
+:root{--bg:#0b0f12;--card:#0f1417;--accent:#1db954;--muted:#9aa5ad;--radius:12px;--gap:16px;}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:#e6eef1;padding:24px;}
+header{display:flex;align-items:center;gap:16px;margin-bottom:18px;}
+.brand{font-weight:700;font-size:18px;}
+input[type="search"]{background:var(--card);border:1px solid rgba(255,255,255,0.04);color:inherit;padding:8px 12px;border-radius:10px;outline:none;}
+input::placeholder{color:var(--muted);}
+.thumbnails{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+.thumb{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.4);cursor:pointer;transition:transform .12s ease;display:flex;flex-direction:column;}
+.thumb:hover{transform:translateY(-4px);}
+.thumb .poster{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
+.thumb .meta{padding:10px;}
+.title{margin:0 0 6px 0;font-size:14px;color:#fff;}
+.sub{color:var(--muted);font-size:13px;}
+</style>
+</head>
+<body>
+<header>
+<div class="brand">Galeria wideo</div>
+<input type="search" id="search" placeholder="Szukaj wg tytułu...">
+</header>
+<section class="thumbnails" id="list"></section>
+<script>
+
+const videos = [
+  { id: 'v0',  title: 'Film 0',  file: 'video/video0.mp4' },
+  { id: 'v1',  title: 'Film 1',  file: 'video/video1.mp4' },
+  { id: 'v2',  title: 'Film 2',  file: 'video/video2.mp4' },
+  { id: 'v3',  title: 'Film 3',  file: 'video/video3.mp4' },
+  { id: 'v4',  title: 'Film 4',  file: 'video/video4.mp4' },
+  { id: 'v5',  title: 'Film 5',  file: 'video/video5.mp4' },
+  { id: 'v6',  title: 'Film 6',  file: 'video/video6.mp4' },
+  { id: 'v7',  title: 'Film 7',  file: 'video/video7.mp4' },
+  { id: 'v8',  title: 'Film 8',  file: 'video/video8.mp4' },
+  { id: 'v9',  title: 'Film 9',  file: 'video/video9.mp4' },
+
+  { id: 'v10', title: 'Film 10', file: 'video/video10.mp4' },
+  { id: 'v11', title: 'Film 11', file: 'video/video11.mp4' },
+  { id: 'v12', title: 'Film 12', file: 'video/video12.mp4' },
+  { id: 'v13', title: 'Film 13', file: 'video/video13.mp4' },
+  { id: 'v14', title: 'Film 14', file: 'video/video14.mp4' },
+  { id: 'v15', title: 'Film 15', file: 'video/video15.mp4' },
+  { id: 'v16', title: 'Film 16', file: 'video/video16.mp4' },
+  { id: 'v17', title: 'Film 17', file: 'video/video17.mp4' },
+  { id: 'v18', title: 'Film 18', file: 'video/video18.mp4' },
+  { id: 'v19', title: 'Film 19', file: 'video/video19.mp4' },
+
+  { id: 'v20', title: 'Film 20', file: 'video/video20.mp4' },
+  { id: 'v21', title: 'Film 21', file: 'video/video21.mp4' },
+  { id: 'v22', title: 'Film 22', file: 'video/video22.mp4' },
+  { id: 'v23', title: 'Film 23', file: 'video/video23.mp4' },
+  { id: 'v24', title: 'Film 24', file: 'video/video24.mp4' },
+  { id: 'v25', title: 'Film 25', file: 'video/video25.mp4' },
+  { id: 'v26', title: 'Film 26', file: 'video/video26.mp4' },
+  { id: 'v27', title: 'Film 27', file: 'video/video27.mp4' },
+  { id: 'v28', title: 'Film 28', file: 'video/video28.mp4' },
+  { id: 'v29', title: 'Film 29', file: 'video/video29.mp4' },
+
+  { id: 'v30', title: 'Film 30', file: 'video/video30.mp4' },
+  { id: 'v31', title: 'Film 31', file: 'video/video31.mp4' },
+  { id: 'v32', title: 'Film 32', file: 'video/video32.mp4' },
+  { id: 'v33', title: 'Film 33', file: 'video/video33.mp4' },
+  { id: 'v34', title: 'Film 34', file: 'video/video34.mp4' },
+  { id: 'v35', title: 'Film 35', file: 'video/video35.mp4' },
+  { id: 'v36', title: 'Film 36', file: 'video/video36.mp4' },
+  { id: 'v37', title: 'Film 37', file: 'video/video37.mp4' },
+  { id: 'v38', title: 'Film 38', file: 'video/video38.mp4' },
+  { id: 'v39', title: 'Film 39', file: 'video/video39.mp4' },
+
+  { id: 'v40', title: 'Film 40', file: 'video/video40.mp4' },
+  { id: 'v41', title: 'Film 41', file: 'video/video41.mp4' },
+  { id: 'v42', title: 'Film 42', file: 'video/video42.mp4' },
+  { id: 'v43', title: 'Film 43', file: 'video/video43.mp4' },
+  { id: 'v44', title: 'Film 44', file: 'video/video44.mp4' },
+  { id: 'v45', title: 'Film 45', file: 'video/video45.mp4' },
+  { id: 'v46', title: 'Film 46', file: 'video/video46.mp4' },
+  { id: 'v47', title: 'Film 47', file: 'video/video47.mp4' },
+  { id: 'v48', title: 'Film 48', file: 'video/video48.mp4' },
+  { id: 'v49', title: 'Film 49', file: 'video/video49.mp4' }
+];
+
+
+const list=document.getElementById('list');
+const searchInput=document.getElementById('search');
+function renderList(filter=''){
+  list.innerHTML='';
+  const filtered=videos.filter(v=>v.title.toLowerCase().includes(filter.toLowerCase()));
+  if(filtered.length===0){list.innerHTML='<div style="color:var(--muted);padding:20px">Brak wyników.</div>';return;}
+  filtered.forEach(v=>{
+    const div=document.createElement('div');
+    div.className='thumb';
+    div.tabIndex=0;
+    div.innerHTML=`<video class='poster' src='${v.file}#t=0.1' preload='metadata' muted playsinline></video><div class='meta'><h4 class='title'>${v.title}</h4><div class='sub'>Otwórz</div></div>`;
+    div.addEventListener('click',()=>window.location.href='video.html?video='+v.id);
+    div.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){window.location.href='video.html?video='+v.id;}});
+    list.appendChild(div);
+  });
+}
+searchInput.addEventListener('input',()=>renderList(searchInput.value));
+renderList();
+</script>
+</body>
+</html>
